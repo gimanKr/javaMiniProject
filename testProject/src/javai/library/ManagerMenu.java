@@ -1,4 +1,4 @@
-package javai.library;
+package src.javai.library;
 
 import java.util.*;
 
