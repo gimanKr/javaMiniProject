@@ -24,7 +24,9 @@ public class ManagerMenu {
 			System.out.print("번호 선택 (이외번호를 입력시 프로그램종료): ");
 			switch(sc.nextInt()) {
 				case 1 :
-					Book.setBook(Book.selectBook());
+					if(Book.cheakListNull()) {
+						Book.setBook(Book.selectBook());
+					}
 					break;
 				case 2 :
 					Book.deleteBook();

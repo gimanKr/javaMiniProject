@@ -61,10 +61,25 @@ public class Book {
 		sc.nextLine();
 		return num;
 	}
+	//도서리스트 여백여부
+	public static boolean cheakListNull() {
+		for (int i = 0; i < BOOK_LIST.length; i++) {
+			if(BOOK_LIST[i] == null) {
+				break;
+			}else if (i == BOOK_LIST.length-1) {
+				System.out.println("더이상 도서등록이 불가능합니다.");
+				return false;
+			}
+		}
+		return true;
+	}
 	
 	//도서 등록
 	public static Book selectBook() {
 		String xName,xGenre,xWriter;
+		boolean flag = false;
+		
+		do {
 		System.out.print("추가하시려는 책의 이름 : ");
 		xName = sc.nextLine();
 		System.out.print("추가하시려는 책의 장르 : ");
@@ -72,6 +87,29 @@ public class Book {
 		System.out.print("추가하시려는 책의 저자 : ");
 		xWriter = sc.nextLine();
 		
+		for (int i = 0; i < BOOK_LIST.length; i++) {	
+			if(BOOK_LIST[i] == null) {
+				break;
+			}else if (BOOK_LIST[i].getName().equals(xName) && BOOK_LIST[i].getName().equals(xGenre)
+					&& BOOK_LIST[i].getName().equals(xWriter)) {
+				System.out.println("이미 등록된 책입니다. 다시입력해주세요.");
+				flag = true;
+			}else if(BOOK_LIST[i].getName().equals(xName)) {
+				System.out.print("같은 이름의 책이 존재합니다.\n그래도 등록하시겠습니까?(y 이외는 다시입력) : ");
+				String str = sc.nextLine();
+				str = str.toLowerCase();
+				switch(str.charAt(0)) {
+				case 'y' :
+					flag = false;
+					break;
+				default : 
+					flag = true;
+					i = BOOK_LIST.length;
+					break;
+				}
+			}
+		}
+		}while(flag);
 		return new Book(xName, xGenre, xWriter);
 	}
 	// 등록도서 자리여분 체크
@@ -81,12 +119,8 @@ public class Book {
 				BOOK_LIST[i] = newBook;
 				System.out.println(BOOK_LIST[i].name+"도서가 등록되었습니다.");
 				break;
-			}else if (i == BOOK_LIST.length-1) {
-				System.out.println("더이상 도서등록이 불가능합니다.");
 			}
 		}
-		
-		
 	}
 	
 	// 도서 삭제
