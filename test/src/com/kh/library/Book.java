@@ -18,6 +18,7 @@ public class Book {
 	private boolean rental = true;//대출유무 
 	
 	Borrower bw = new Borrower();
+	ManagerMenu MM = new ManagerMenu();
 
 	//생성자
 	public Book() {}
@@ -185,44 +186,58 @@ public class Book {
 	
 	// 도서 대출
 	public void rentalBook() {
-		System.out.print("대출하실 책의 이름을 입력해주세요 : ");
-		String str = sc.nextLine();
-		for(int i = 0; i < BOOK_LIST.length; i ++) {
-			if(this.BOOK_LIST[i] == null) {
-				System.out.println("도서 목록이 비어있습니다.");
-				break;
-			}else if(this.BOOK_LIST[i].name.equals(str)) {
-				if(this.BOOK_LIST[i].rental) {
-					switch(bw.getBorrowerRank()) {
-						case 1 :
-							if(bw.getMyBook().size() > 5) {
-								System.out.println("최대 대출 도서를 초과하여 현재 대출이 불가능 합니다.");
+		System.out.print("대출하실 회원님의 Id 입력해주세요 : ");
+		String tId = sc.nextLine();
+		System.out.print("비밀번호를 입력해주세요 : ");
+		String tPwd = sc.nextLine();
+		for(int j = 1001; j < MM.map.size()+1001; j++) {
+			if(MM.map.get(j).getId().equals(tId)) {
+				if(MM.map.get(j).getPassword().equals(tPwd)) {
+					System.out.print("대출하실 책의 이름을 입력해주세요 : ");
+					String str = sc.nextLine();
+					for(int i = 0; i < BOOK_LIST.length; i ++) {
+						if(this.BOOK_LIST[i] == null) {
+							System.out.println("도서 목록이 비어있습니다.");
+							break;
+						}else if(this.BOOK_LIST[i].name.equals(str)) {
+							if(this.BOOK_LIST[i].rental) {
+								switch(bw.getBorrowerRank()) {
+								case 1 :
+									if(bw.getMyBook().size() > 5) {
+										System.out.println("최대 대출 도서를 초과하여 현재 대출이 불가능 합니다.");
+										return;
+									}
+								case 2 :
+									if(bw.getMyBook().size() > 4) {
+										System.out.println("최대 대출 도서를 초과하여 현재 대출이 불가능 합니다.");
+										return;
+									}
+								case 3 :
+									if(bw.getMyBook().size() > 3) {
+										System.out.println("최대 대출 도서를 초과하여 현재 대출이 불가능 합니다.");
+										return;
+									}
+								}
+								bw.getMyBook().add(this.BOOK_LIST[i]);
+								bw.addBorrowBook();
+								System.out.println(this.BOOK_LIST[i].name+" 도서가 대출 되었습니다.");
+								this.BOOK_LIST[i].rental = false;
 								return;
-							}
-						case 2 :
-							if(bw.getMyBook().size() > 4) {
-								System.out.println("최대 대출 도서를 초과하여 현재 대출이 불가능 합니다.");
-								return;
-							}
-						case 3 :
-							if(bw.getMyBook().size() > 3) {
-								System.out.println("최대 대출 도서를 초과하여 현재 대출이 불가능 합니다.");
-								return;
-							}
-								
+							}else
+								System.out.println(this.BOOK_LIST[i].name+" 도서는 현재 대출이 불가능 합니다.");
+							return;
+						}else if(i == BOOK_LIST.length-1)
+							System.out.println("입력하신 "+str+"은 없는 도서 입니다.");
+						return;
 					}
-						bw.getMyBook().add(this.BOOK_LIST[i]);
-						bw.addBorrowBook();
-						System.out.println(this.BOOK_LIST[i].name+" 도서가 대출 되었습니다.");
-						this.BOOK_LIST[i].rental = false;
-					
-				}else
-					System.out.println(this.BOOK_LIST[i].name+" 도서는 현재 대출이 불가능 합니다.");
-				
-				break;
-			}else if(i == BOOK_LIST.length-1)
-				System.out.println("입력하신 "+str+"은 없는 도서 입니다.");
+				}else {
+					System.out.println("잘못된 비밀번호를 입력하였습니다.");
+					return;
+				}
+			}
 		}
+		System.out.println("입력하신 Id를 찾지 못했습니다.");
+		
 	}
 	
 	

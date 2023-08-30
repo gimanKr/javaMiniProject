@@ -9,7 +9,7 @@ public class ManagerMenu {
 	private int bookNumber;//책번호
 	private static final Book[] BOOK_LIST = new Book[10];
 	
-	HashMap<Integer, Borrower> map = new HashMap<>();
+	static HashMap<Integer, Borrower> map = new HashMap<>();
 	
 	public void Menu() {
 		while(true) {
